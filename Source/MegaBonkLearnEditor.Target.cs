@@ -9,7 +9,7 @@ public class MegaBonkLearnEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V7;
-
-		ExtraModuleNames.AddRange( new string[] { "MegaBonkLearn" } );
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_8;
+        ExtraModuleNames.AddRange( new string[] { "MegaBonkLearn" } );
 	}
 }

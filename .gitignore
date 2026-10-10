@@ -1,16 +1,70 @@
-# UE generated — пересоздаются при сборке, весят гигабайты
+# ============================================================
+#  MegaBonkLearn — Unreal Engine 5.8 .gitignore
+#  Скопируй в КОРЕНЬ проекта (рядом с MegaBonkLearn.uproject)
+# ============================================================
+#  ВАЖНО про синтаксис:
+#    Binaries/   = любая папка с таким именем НА ЛЮБОЙ ГЛУБИНЕ
+#    /Binaries/  = только в КОРНЕ репозитория
+#  Для UE нужен первый вариант: Binaries/ и Intermediate/ есть
+#  и в корне проекта, и внутри каждого плагина.
+# ============================================================
+
+# --- Сгенерированное Unreal: пересоздаётся при сборке, весит гигабайты ---
 Binaries/
 DerivedDataCache/
 Intermediate/
 Saved/
 Build/
+.vsconfig
 
-# IDE — генерируются автоматически
+# --- Сгенерированные файлы проектов IDE ---
 .vs/
 .vscode/
 .idea/
 *.sln
+*.slnLaunch
 *.suo
-*.vcxproj*
+*.vcxproj
+*.vcxproj.*
 *.xcworkspace
 *.xcodeproj
+*.opensdf
+*.opendb
+*.sdf
+*.VC.db
+*.VC.opendb
+*.DotSettings.user
+
+# --- IDE-интеграция: НЕ является кодом игры ---
+# Компонент "Visual Studio Tools for Unreal Engine" копирует плагин
+# движка внутрь проекта. Это машинно-зависимый артефакт — в репозиторий не должен попадать.
+Plugins/VisualStudioTools/
+Plugins/Developer/VisualStudioTools/
+
+# --- Системный мусор ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Логи, дампы, отчёты о падениях ---
+*.log
+*.dmp
+crashinfo*/
+
+# --- Упакованные билды и архивы ---
+*.pak
+*.ucas
+*.utoc
+*.zip
+*.7z
+
+# ============================================================
+#  ЧТО ОБЯЗАТЕЛЬНО КОММИТИМ (ничего из этого сюда не добавляй):
+#    Content/
+#    Config/
+#    Source/                    ← весь твой C++
+#    Plugins/<свои>/Source/     ← исходники СВОИХ плагинов
+#    Plugins/<свои>/Content/
+#    Plugins/<свои>/*.uplugin
+#    *.uproject
+# ============================================================
