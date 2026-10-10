@@ -1,1 +1,17 @@
-Content/** filter=lfs diff=lfs merge=lfs -text
+# Бинарники Unreal
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap   filter=lfs diff=lfs merge=lfs -text
+
+# Прочие бинарные ассеты
+*.png  filter=lfs diff=lfs merge=lfs -text
+*.jpg  filter=lfs diff=lfs merge=lfs -text
+*.tga  filter=lfs diff=lfs merge=lfs -text
+*.fbx  filter=lfs diff=lfs merge=lfs -text
+*.wav  filter=lfs diff=lfs merge=lfs -text
+*.mp3  filter=lfs diff=lfs merge=lfs -text
+
+# Текстовые конфиги — обычный git, чтобы работал diff
+*.ini  text eol=crlf
+*.cs   text eol=crlf
+*.h    text eol=crlf
+*.cpp  text eol=crlf

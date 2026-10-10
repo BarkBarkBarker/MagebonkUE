@@ -1,14 +1,16 @@
-Binaries
-DerivedDataCache
-Intermediate
-Saved
-.vscode
-.vs
-*.VC.db
-*.opensdf
-*.opendb
-*.sdf
+# UE generated — пересоздаются при сборке, весят гигабайты
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+Build/
+
+# IDE — генерируются автоматически
+.vs/
+.vscode/
+.idea/
 *.sln
 *.suo
-*.xcodeproj
+*.vcxproj*
 *.xcworkspace
+*.xcodeproj
