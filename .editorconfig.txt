@@ -1,0 +1,82 @@
+# ============================================================
+#  .editorconfig для MegaBonkLearn (Unreal Engine 5.8)
+#  ПОЛОЖИТЬ В КОРЕНЬ ПРОЕКТА — рядом с MegaBonkLearn.uproject
+#  и закоммитить.
+#
+#  Visual Studio 2022, Rider и VS Code читают этот файл
+#  автоматически. Он задаёт правила форматирования и КОДИРОВКИ
+#  для всей команды (и для тебя через месяц).
+#
+#  Docs: https://editorconfig.org
+# ============================================================
+
+root = true
+
+# ------------------------------------------------------------
+#  Общее для всех файлов
+# ------------------------------------------------------------
+[*]
+charset                  = utf-8
+end_of_line              = crlf
+insert_final_newline     = true
+trim_trailing_whitespace = true
+indent_style             = tab
+indent_size              = 4
+
+# ------------------------------------------------------------
+#  C++ — КЛЮЧЕВОЕ ПРАВИЛО
+#  utf-8-bom = UTF-8 с меткой BOM.
+#  MSVC без BOM считает файл записанным в системной ANSI-кодировке
+#  (cp1251 на русской Windows) → кириллица в комментариях и
+#  в TEXT("...") ломается на машинах с другой локалью.
+#  С BOM компилятор всегда знает кодировку точно.
+# ------------------------------------------------------------
+[*.{h,hpp,cpp,inl,ipp}]
+charset     = utf-8-bom
+indent_style = tab
+indent_size  = 4
+# Стандарт Epic: фигурная скобка на новой строке
+cpp_new_line_before_open_brace_namespace  = new_line
+cpp_new_line_before_open_brace_type       = new_line
+cpp_new_line_before_open_brace_function   = new_line
+cpp_new_line_before_open_brace_block      = new_line
+cpp_new_line_before_open_brace_lambda     = ignore
+cpp_indent_case_contents                  = true
+cpp_indent_case_labels                    = false
+cpp_space_before_function_open_parenthesis = remove
+cpp_new_line_before_else                  = true
+cpp_new_line_before_catch                 = true
+
+# ------------------------------------------------------------
+#  C# (Build.cs, Target.cs) — здесь TABS не по стандарту,
+#  но UE-шаблоны генерируются с табами. Оставляем табы,
+#  чтобы git diff не шумел.
+# ------------------------------------------------------------
+[*.cs]
+charset      = utf-8-bom
+indent_style = tab
+indent_size  = 4
+
+# ------------------------------------------------------------
+#  Конфиги Unreal и метаданные проекта
+# ------------------------------------------------------------
+[*.{ini,uproject,uplugin,json}]
+charset      = utf-8
+indent_style = tab
+indent_size  = 4
+
+# ------------------------------------------------------------
+#  Markdown: trailing whitespace значим (два пробела = перенос строки)
+# ------------------------------------------------------------
+[*.md]
+trim_trailing_whitespace = false
+indent_style             = space
+indent_size              = 2
+
+# ------------------------------------------------------------
+#  Файлы git
+# ------------------------------------------------------------
+[{.gitignore,.gitattributes}]
+charset      = utf-8
+indent_style = space
+indent_size  = 2

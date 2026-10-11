@@ -1,10 +1,10 @@
-#pragma once
+п»ї#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BaseInteractable.generated.h"   // ОБЯЗАТЕЛЬНО последним
+#include "BaseInteractable.generated.h"   // РћР‘РЇР—РђРўР•Р›Р¬РќРћ РїРѕСЃР»РµРґРЅРёРј
 
-UCLASS(Blueprintable)   // Blueprintable = от этого класса можно наследоваться в BP
+UCLASS(Blueprintable)   // Blueprintable = РѕС‚ СЌС‚РѕРіРѕ РєР»Р°СЃСЃР° РјРѕР¶РЅРѕ РЅР°СЃР»РµРґРѕРІР°С‚СЊСЃСЏ РІ BP
 class MEGABONKLEARN_API ABaseInteractable : public AActor
 {
     GENERATED_BODY()
@@ -12,7 +12,7 @@ class MEGABONKLEARN_API ABaseInteractable : public AActor
 public:
     ABaseInteractable();
 
-    /** Стартовое здоровье. EditAnywhere — видно в Details; BlueprintReadWrite — читается и пишется из BP. */
+    /** РЎС‚Р°СЂС‚РѕРІРѕРµ Р·РґРѕСЂРѕРІСЊРµ. EditAnywhere вЂ” РІРёРґРЅРѕ РІ Details; BlueprintReadWrite вЂ” С‡РёС‚Р°РµС‚СЃСЏ Рё РїРёС€РµС‚СЃСЏ РёР· BP. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
     float MaxHealth = 100.0f;
 
@@ -22,15 +22,15 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
     bool bIsDead = false;
 
-    /** Нанести урон. BlueprintCallable — можно вызвать из BP. */
+    /** РќР°РЅРµСЃС‚Рё СѓСЂРѕРЅ. BlueprintCallable вЂ” РјРѕР¶РЅРѕ РІС‹Р·РІР°С‚СЊ РёР· BP. */
     UFUNCTION(BlueprintCallable, Category = "Combat")
     virtual void TakeDamage(float DamageAmount);
 
-    /** Хук для BP: что сделать при смерти (VFX, звук, дроп). Реализация ТОЛЬКО в Blueprint. */
+    /** РҐСѓРє РґР»СЏ BP: С‡С‚Рѕ СЃРґРµР»Р°С‚СЊ РїСЂРё СЃРјРµСЂС‚Рё (VFX, Р·РІСѓРє, РґСЂРѕРї). Р РµР°Р»РёР·Р°С†РёСЏ РўРћР›Р¬РљРћ РІ Blueprint. */
     UFUNCTION(BlueprintImplementableEvent, Category = "Combat")
     void OnDeath();
 
-    /** Хук с реализацией по умолчанию в C++, BP может переопределить. */
+    /** РҐСѓРє СЃ СЂРµР°Р»РёР·Р°С†РёРµР№ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ C++, BP РјРѕР¶РµС‚ РїРµСЂРµРѕРїСЂРµРґРµР»РёС‚СЊ. */
     UFUNCTION(BlueprintNativeEvent, Category = "Combat")
     void OnDamaged(float DamageAmount);
 
