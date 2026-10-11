@@ -1,10 +1,23 @@
-﻿#pragma once
+// ============================================================
+//  BaseInteractable.h — ИСПРАВЛЕННАЯ ВЕРСИЯ
+//  Замена: скрытие AActor::TakeDamage (warnings C4263/C4264)
+//
+//  Кодировка: сохранить как UTF-8 with BOM
+//  Комментарии намеренно на английском — см. правило в devlog
+// ============================================================
+#pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "BaseInteractable.generated.h"   // ОБЯЗАТЕЛЬНО последним
+#include "BaseInteractable.generated.h"
 
-UCLASS(Blueprintable)   // Blueprintable = от этого класса можно наследоваться в BP
+class AController;
+
+/**
+ * Base class for anything that has health and can die.
+ * Demonstrates the hybrid pattern: logic in C++, presentation hooks in Blueprint.
+ */
+UCLASS(Blueprintable)
 class MEGABONKLEARN_API ABaseInteractable : public AActor
 {
     GENERATED_BODY()
@@ -12,29 +25,43 @@ class MEGABONKLEARN_API ABaseInteractable : public AActor
 public:
     ABaseInteractable();
 
-    /** Стартовое здоровье. EditAnywhere — видно в Details; BlueprintReadWrite — читается и пишется из BP. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
     float MaxHealth = 100.0f;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-    float CurrentHealth;
+    float CurrentHealth = 100.0f;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
     bool bIsDead = false;
 
-    /** Нанести урон. BlueprintCallable — можно вызвать из BP. */
-    UFUNCTION(BlueprintCallable, Category = "Combat")
-    virtual void TakeDamage(float DamageAmount);
+    /**
+     * Controller that dealt the last damage.
+     * Needed in M4 to award XP to whoever got the kill.
+     * Kept as a property (not an event parameter) so existing Blueprint
+     * event signatures stay valid.
+     */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+    TObjectPtr<AController> LastDamageInstigator;
 
-    /** Хук для BP: что сделать при смерти (VFX, звук, дроп). Реализация ТОЛЬКО в Blueprint. */
+    /**
+     * Override of the ENGINE damage pipeline. The signature MUST match
+     * AActor::TakeDamage exactly, otherwise we hide the base function and
+     * UGameplayStatics::ApplyDamage() would call the empty base version.
+     *
+     * Call it from Blueprint via the "Apply Damage" node, NOT directly.
+     */
+    virtual float TakeDamage(float DamageAmount, const struct FDamageEvent& DamageEvent,
+                             AController* EventInstigator, AActor* DamageCauser) override;
+
+    /** Blueprint hook: damage VFX / sound / floating numbers. */
+    UFUNCTION(BlueprintNativeEvent, Category = "Combat")
+    void OnDamaged(float ActualDamage);
+
+    /** Blueprint hook: death VFX / sound / loot. Implemented only in Blueprint. */
     UFUNCTION(BlueprintImplementableEvent, Category = "Combat")
     void OnDeath();
 
-    /** Хук с реализацией по умолчанию в C++, BP может переопределить. */
-    UFUNCTION(BlueprintNativeEvent, Category = "Combat")
-    void OnDamaged(float DamageAmount);
-
 protected:
     virtual void BeginPlay() override;
-    virtual void OnDamaged_Implementation(float DamageAmount);
+    virtual void OnDamaged_Implementation(float ActualDamage);
 };

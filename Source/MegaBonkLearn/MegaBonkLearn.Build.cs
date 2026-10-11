@@ -1,4 +1,15 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// ============================================================
+//  MegaBonkLearn.Build.cs — с добавленной зависимостью EnhancedInput
+//
+//  ЗАЧЕМ: MegaBonkPlayerController.cpp использует
+//  UEnhancedInputLocalPlayerSubsystem и UInputMappingContext.
+//  Без этой строки получишь error LNK2019 (unresolved external symbol)
+//  — см. THEORY-01 §3: LNK = иди в Build.cs.
+//
+//  ПОЧЕМУ Private, а не Public: в заголовке у нас только
+//  forward declaration (class UInputMappingContext;), сам тип
+//  используется исключительно в .cpp. Значит — Private.
+// ============================================================
 
 using UnrealBuildTool;
 
@@ -7,17 +18,9 @@ public class MegaBonkLearn : ModuleRules
 	public MegaBonkLearn(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
-
-		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
-		// Uncomment if you are using online features
-		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
-
-		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+		PrivateDependencyModuleNames.AddRange(new string[] { "EnhancedInput" });
 	}
 }

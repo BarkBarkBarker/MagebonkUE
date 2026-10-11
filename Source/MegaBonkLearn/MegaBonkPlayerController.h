@@ -1,13 +1,28 @@
+// ============================================================
+//  MegaBonkPlayerController.h вЂ” Р”РћРџРћР›РќР•РќРќРђРЇ Р’Р•Р РЎРРЇ
+//  Р”РѕР±Р°РІР»РµРЅРѕ: СЂРµРіРёСЃС‚СЂР°С†РёСЏ Input Mapping Context.
+//
+//  Р—РђР§Р•Рњ: РІ С€Р°Р±Р»РѕРЅРµ 5.8 СЌС‚РёРј Р·Р°РЅРёРјР°РµС‚СЃСЏ BP_ThirdPersonPlayerController
+//  (РїСЂРѕРІРµСЂРµРЅРѕ СЂР°Р·Р±РѕСЂРѕРј Р±РёРЅР°СЂРЅРёРєР°: С‚Р°Рј РµСЃС‚СЊ AddMappingContext,
+//  IMC_Default, IMC_MouseLook, EnhancedInputLocalPlayerSubsystem).
+//  Р—Р°РјРµРЅРёРІ РµРіРѕ СЃРІРѕРёРј РєРѕРЅС‚СЂРѕР»Р»РµСЂРѕРј, РјС‹ С‚РµСЂСЏРµРј РІРІРѕРґ - РїРµСЂСЃРѕРЅР°Р¶
+//  РїРµСЂРµСЃС‚Р°РЅРµС‚ СЂРµР°РіРёСЂРѕРІР°С‚СЊ РЅР° WASD. РџРѕСЌС‚РѕРјСѓ РґРµР»Р°РµРј С‚Рѕ Р¶Рµ СЃР°РјРѕРµ РІ C++.
+//
+//  РљРѕРґРёСЂРѕРІРєР°: UTF-8 with BOM
+// ============================================================
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "MegaBonkPlayerController.generated.h"
 
+// Forward declaration only. That is enough for a TObjectPtr member,
+// and it lets us keep "EnhancedInput" as a PRIVATE module dependency.
+class UInputMappingContext;
+
 /**
- * «Мозг и руки» игрока. Живёт дольше, чем Pawn:
- * смерть персонажа не уничтожает контроллер, поэтому именно он
- * показывает Game Over и обрабатывает паузу.
+ * Player brain and hands. Outlives the Pawn: character death does not
+ * destroy the controller, which is why Game Over and pause live here.
  */
 UCLASS(Blueprintable)
 class MEGABONKLEARN_API AMegaBonkPlayerController : public APlayerController
@@ -17,15 +32,28 @@ class MEGABONKLEARN_API AMegaBonkPlayerController : public APlayerController
 public:
     AMegaBonkPlayerController();
 
-    /** Игра на паузе (например, открыт экран выбора апгрейда). */
+    // ------------------------------------------------ Input
+
+    /**
+     * Mapping context registered on BeginPlay.
+     * Set it to IMC_Default in BP_MegaBonkPlayerController Class Defaults.
+     */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+    TObjectPtr<UInputMappingContext> DefaultMappingContext;
+
+    /** Higher priority contexts win when bindings conflict. */
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
+    int32 DefaultMappingPriority = 0;
+
+    // ------------------------------------------------ Game state
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Game")
     bool bIsGamePaused = false;
 
-    /** Поставить/снять игру с паузы. */
     UFUNCTION(BlueprintCallable, Category = "Game")
     void ToggleGamePause();
 
-    /** Хук для BP: показать/скрыть UI паузы. */
+    /** Blueprint hook: show/hide the pause UI. */
     UFUNCTION(BlueprintImplementableEvent, Category = "Game")
     void OnGamePausedChanged(bool bPaused);
 
